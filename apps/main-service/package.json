@@ -1,0 +1,9 @@
+{
+    "name": "@apps/main-service",
+    "version": "0.0.1",
+    "description": "Main service for Airbnb backend",
+    "main": "main.ts",
+    "scripts": {
+        "start": "nest start"
+    }
+}
