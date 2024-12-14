@@ -5,5 +5,15 @@
     "main": "main.ts",
     "scripts": {
         "start": "nest start"
+    },
+    "devDependencies": {
+        "prisma": "^6.0.1"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.0.1",
+        "prisma": "^6.0.1"
+    },
+    "prisma": {
+        "schema": "apps/main-service/prisma/schema.prisma"
     }
 }
