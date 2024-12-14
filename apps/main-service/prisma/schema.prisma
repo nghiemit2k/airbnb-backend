@@ -16,11 +16,12 @@ datasource db {
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
-  username  String   @unique
+  password  String   @map("password")
+  username  String   @unique 
   firstName String?  @map("first_name")
   lastName  String?  @map("last_name")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  
+
   @@map("users")
 }
