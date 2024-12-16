@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { DatabaseService } from "../../database/database.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import bcrypt from "bcrypt";
@@ -24,5 +24,20 @@ export class UserService {
     private async hashPassword(password: string): Promise<string> {
         const salt = await bcrypt.genSalt(10);
         return await bcrypt.hash(password, salt);
+    }
+    comparePassword(password: string, hashedPassword: string) {
+        return bcrypt.compare(password, hashedPassword);
+    }
+
+    async findOneOrFailByEmail(email: string) {
+        const user = await this.databaseService.user.findUnique({
+            where: { email },
+        });
+
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        return user;
     }
 }
