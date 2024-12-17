@@ -22,6 +22,76 @@ model User {
   lastName  String?  @map("last_name")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
+  properties  Property[]
+  reservations Reservation[]
   @@map("users")
+}
+
+model Country {
+  id          String    @id @default(cuid())
+  name        String    @db.VarChar(20)
+  code        String    @db.VarChar(3)
+  // properties  Property[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+
+  @@map("country")
+}
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @db.VarChar(20)
+  description String    @db.Text
+  properties  Property[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+
+  @@map("category")
+}
+model Amenity {
+  id          String    @id @default(cuid())
+  name        String    @db.VarChar(20)
+  // properties  Property[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+
+  @@map("amenity")
+}
+model Property {
+  id          String    @id @default(cuid())
+  name        String    @db.VarChar(20)
+  tagLine     String    @db.VarChar(30) @map("tag_line")
+  categoryId  String    @map("category_id")
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  // countryId   String    @map("country_id")
+  // country     Country   @relation(fields: [countryId], references: [id])
+  description String    @db.Text
+  coverUrl    String    @db.Text @map("cover_url")
+  price       Float
+  guests      Int
+  bedrooms    Int
+  beds        Int
+  baths       Int
+  // amenities  Amenity[]
+  creatorId   String    @map("creator_id")
+  creator     User      @relation(fields: [creatorId], references: [id])
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+  reservations Reservation[]
+
+  @@map("property")
+}
+
+model Reservation {
+  id          String    @id @default(cuid())
+  propertyId  String    @map("property_id")
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id])
+  totalPrice  Float     @map("total_price")
+  startDate   String    @map("start_date")
+  endDate     String    @map("end_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+
+  @@map("reservation")
 }
