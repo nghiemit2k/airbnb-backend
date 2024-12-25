@@ -4,14 +4,23 @@ import { CreateReservationDto } from "./dto/create-reservation.dto";
 import { User } from "@prisma/client";
 import { UserReq } from "../../common/decorator/user.decorator";
 import { UpdateReservationDto } from "./dto/update-reservation.dto";
+import { StripeService } from "../stripe/stripe.service";
 @Controller('/reservations')
 export class ReservationController {
-    constructor(private reservationService: ReservationService) { }
+    constructor(private reservationService: ReservationService,
+        private stripeService: StripeService,
+    ) { }
 
     @Post()
-    create(@UserReq() user: User, @Body() data: CreateReservationDto) {
+    async create(@UserReq() user: User, @Body() data: CreateReservationDto) {
         data.userId = user.id;
-        return this.reservationService.create(data);
+        const reservation = await this.reservationService.create(data);
+        const amount = reservation.totalPrice * 100; // sent
+        const session = await this.stripeService.createCheckoutSession(amount);
+        return {
+            reservation,
+            session,
+        };
     }
 
     @Get()
