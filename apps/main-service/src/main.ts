@@ -5,11 +5,14 @@ import {
   ValidationError,
   ValidationPipe,
 } from '@nestjs/common';
+import { json, raw, urlencoded } from 'express';
+import rawBodyMiddleware from './raw-body.middleware';
 async function bootstrap() {
   console.log(process.env.PORT);
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.setGlobalPrefix('api');
+  app.use(rawBodyMiddleware());
   // setup validation
   app.useGlobalPipes(
     new ValidationPipe({

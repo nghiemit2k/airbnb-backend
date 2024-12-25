@@ -9,8 +9,9 @@ import { AuthGuard } from './domain/auth/guard/auth.guard';
 import { CategoryModule } from './domain/category/category.module';
 import { PropertyModule } from './domain/property/property.module';
 import { ReservationModule } from './domain/reservation/reservation.module';
+import { StripeModule } from './domain/stripe/stripe.module';
 @Module({
-    imports: [DatabaseModule, DomainModule, AuthModule, CategoryModule, PropertyModule, ReservationModule],
+    imports: [DatabaseModule, DomainModule, AuthModule, CategoryModule, PropertyModule, ReservationModule, StripeModule],
     controllers: [],
     providers: [{
         provide: APP_INTERCEPTOR,
